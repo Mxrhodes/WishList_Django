@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Belt 2 Exam</title>
+</head>
+<body>
+
+    <div class="register">
+
+        <fieldset>
+            <legend><h1>Register</h1></legend>
+            <form action="/register" method="post">
+                {% csrf_token %}
+                <p>
+                    Name:<input name="name" type="text"><br>
+                    Username:<input name="username" type="text"><br>
+                    Password:<input name="password" placeholder="8 characters or more" type="password"><br>
+                    Confirm Password:<input name="confirm_password" placeholder="must match password" type="password"><br>
+                    Hired:<input name="hired" type="date"><br>
+                    <input type="submit" value="Register">
+                </p>
+            </form>
+        </fieldset>
+    </div>
+
+    <div class="login">
+
+        <fieldset>
+            <legend><h1>Login</h1></legend>
+            <form action="/login" method="post">
+                {% csrf_token %}
+                <p>
+                    Username:<input name="username" type="text"><br>
+                    Password<input name="password" type="password"><br>
+                    <input type="submit" value="Login">
+                </p>
+                </form>
+        </fieldset>
+    </div>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+</body>
+</html>

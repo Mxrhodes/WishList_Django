@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Hello, world!</title>
+    <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+            
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+            
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+            </style>
+    </head>
+    <body>
+        <div class="head">
+            <h1>Hello, {{ request.session.username }}</h1>
+            <a href="/logout">Logout</a>
+        </div>
+
+        <div class="your_item">
+            <h4>Your Wish List:</h4>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Added by</th>
+                <th>Date Added</th>
+                <th>Action</th>
+            </tr>
+            {% for item in joinedItems %}
+                {% if item.item.added_by_id == request.session.user_id %}
+                <tr>
+                    <td><a href="/wish_items/show/{{item.item.id}}">{{item.item.name}}</a></td>
+                    <td>{{item.item.added_by.name}}</td>
+                    <td>{{item.item.created_at}}</td>
+                    <td><a href="/wish_items/{{item.item.id}}/delete">Delete</a></td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td><a href="/wish_items/show/{{item.item.id}}">{{item.item.name}}</a></td>
+                        <td>{{item.item.added_by.name}}</td>
+                        <td>{{item.item.created_at}}</td>
+                        <td><a href="/wish_items/{{item.item.id}}/removefromlist">Remove from my Wishlist</a></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+
+        <div class="others_items">
+            <h4>Others User's Wish List</h4>
+        <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Added By</th>
+                    <th>Date Added</th>
+                    <th>Action</th>
+                </tr>
+                {% for item in allItems %}
+                    <tr>
+                        <td><a href="/wish_items/show/{{item.id}}">{{item.name}}</a></td>
+                        <td>{{item.added_by.name}}</td>
+                        <td>{{item.created_at}}</td>
+                        <td><a href="/wish_items/{{item.id}}/join">Add to my Wishlist</a></td>
+                    </tr>
+                {% endfor %}
+        </table>
+        </div>
+        <a href="/wish_items/create">Add Item</a>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </body>
+</html>
